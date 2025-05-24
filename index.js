@@ -82,8 +82,6 @@ async function updateBalance(amount, wallet_id) {
 
 app.post('/credit-currency', async (req, res) => {
   const { wallet_id, amount, round_id, timestamp, signature } = req.body;
-  console.log("received request");
-  console.log(req.body);
 
   // Validate timestamp freshness
   const now = Math.floor(Date.now() / 1000); // Current time in seconds
@@ -106,6 +104,7 @@ app.post('/credit-currency', async (req, res) => {
   try {
         const result = await updateBalance(amount, wallet_id);
         processedRounds.add(key);
+        console.log('Credited wallet succesfully');
         res.json({ success: true });
     } catch (err) {
         console.error('LootLocker API Error:', err.response?.data || err.message);
