@@ -72,6 +72,7 @@ async function updateBalance(amount, wallet_id) {
     } catch (err) {
         if (err.response?.status === 401) {
             // Token expired, refresh and retry
+            authToken = null;
             authToken = await getAuthToken();
             return (await sendRequest(authToken)).data;
         } else {
