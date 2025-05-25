@@ -25,6 +25,7 @@ function verifySignature(payload, signature, secret) {
 // Function to start a server session
 async function getAuthToken() {
   if (authToken) return authToken;
+  console.log('Getting auth token');
 
   try {
     const response = await axios.post(
@@ -70,7 +71,7 @@ async function updateBalance(amount, wallet_id) {
         if (!authToken) authToken = await getAuthToken();
         return (await sendRequest(authToken)).data;
     } catch (err) {
-        if (err.response?.status === 401) {
+        if (err.message == 'Authentication Failed') {
             // Token expired, refresh and retry
             authToken = null;
             authToken = await getAuthToken();
@@ -115,5 +116,5 @@ app.post('/credit-currency', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`LootLocker Server API backend running on http://localhost:${PORT}`);
+  console.log(`LootLocker Server API backend running on port ${PORT}`);
 });
