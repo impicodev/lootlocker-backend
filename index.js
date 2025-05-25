@@ -71,8 +71,10 @@ async function updateBalance(amount, wallet_id) {
         if (!authToken) authToken = await getAuthToken();
         return (await sendRequest(authToken)).data;
     } catch (err) {
+        console.log(`error accessing API: ${err.message}    ${err.status}`);
         if (err.message == 'Authentication Failed') {
             // Token expired, refresh and retry
+            console.log('token expired. fetching new token');
             authToken = null;
             authToken = await getAuthToken();
             return (await sendRequest(authToken)).data;
